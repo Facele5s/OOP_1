@@ -70,46 +70,72 @@ int main() {
 
 		break;
 	}
-	case 2: { ///// 2nd part of task
-		int n;
-		bool flag = true;
+	case 2: { ///// 2nd part of task //Я решил обойтись без переменной n, так как при использовании векторов она просто не нужна, поэтому текстовый файл начинается сразу с комлпексного числа
 		string s;
-		string path = "";
-		ifstream file("C:/Users/Dmitriy/source/repos/ConsoleApplication2/ConsoleApplication2/complex.txt");
+		ifstream file("complex.txt");
 
 		vector <Complex> p;
-
 
 		while (getline(file, s)) {
 			Complex a;
 			int re;
 			int im;
 
-			if (flag) {
-				//n = stoi(s);
-				flag = false;
-			}
+			bool im_sign = false; //Imagine part sign (true = plus, false = minus)
 
-			bool re_im = true; // true - before + or -, false - after + or -
-			bool pm = false; // Sign of imagine part: + is true, - is false
+			int ind; //Index of imagine part sign
 			string real = ""; // Real part in string
 			string imagine = ""; //Imagine part in string
 
-			for (int i = 0; i < s.length(); i++) {
-
-
-
-
+			if (s[0] == '-') {
+				for (int i = 1; i < s.length() - 1; i++) {
+					if (s[i] == '+' || s[i] == '-') {
+						ind = i;
+						if (s[i] == '+') {
+							im_sign = true;
+						}
+						else {
+							im_sign = false;
+						}
+					}
+				}
+				for (int i = 1; i < ind; i++) {
+					real += s[i];
+				}
+				for (int i = ind + 1; i < s.length() - 1; i++) {
+					imagine += s[i];
+				}
+				re = -stoi(real);
+				im = stoi(imagine);
+				if (!im_sign) im = -im;
+			}
+			else {
+				for (int i = 0; i < s.length() - 1; i++) {
+					if (s[i] == '+' || s[i] == '-') {
+						ind = i;
+						if (s[i] == '+') {
+							im_sign = true;
+						}
+						else {
+							im_sign = false;
+						}
+					}
+				}
+				for (int i = 0; i < ind; i++) {
+					real += s[i];
+				}
+				for (int i = ind + 1; i < s.length() - 1; i++) {
+					imagine += s[i];
+				}
+				re = stoi(real);
+				im = stoi(imagine);
+				if (!im_sign) im = -im;
 
 			}
-			//cout << real << endl << imagine << endl;
-			//re = stoi(real);
-			//im = stoi(imagine);
-			//if (!pm) im = -im;
 
-			//a.set_complex(re, im);
-			//p.push_back(a);
-
+			a.set_complex(re, im);
+			p.push_back(a);
+			
 		}
 
 		file.close();
@@ -118,7 +144,7 @@ int main() {
 			p[i].output_complex();
 			cout << endl;
 		}
-
+		
 		break;
 	}
 	}
